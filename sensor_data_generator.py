@@ -1,7 +1,7 @@
 #script for mimicing the sensor output
 import random
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from kafka import KafkaProducer
 import json
 
@@ -11,7 +11,7 @@ def generate_sensor_data():
         "sensor_id": random.randint(1, 5),
         "temperature": round(random.uniform(20.0, 30.0), 2),
         "humidity": round(random.uniform(30.0, 70.0), 2),
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }
     return data
 
