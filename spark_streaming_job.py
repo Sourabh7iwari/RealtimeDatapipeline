@@ -21,7 +21,7 @@ try:
         kafka_stream_df = spark \
             .readStream \
             .format("kafka") \
-            .option("kafka.bootstrap.servers", "172.18.0.7:9092") \
+            .option("kafka.bootstrap.servers", "kafka1:19092") \
             .option("subscribe", "sensor-data") \
             .load()
         logger.info("Successfully connected to Kafka and loaded data")
@@ -49,7 +49,7 @@ try:
         raise
 
     # Define PostgreSQL connection properties
-    jdbc_url = "jdbc:postgresql://172.18.0.3:5432/sensordb"
+    jdbc_url = "jdbc:postgresql://postgres:5432/sensordb"
     jdbc_properties = {
         "user": "myuser",
         "password": "mypassword",
