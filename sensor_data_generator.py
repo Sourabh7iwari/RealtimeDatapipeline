@@ -21,7 +21,7 @@ def json_serializer(data):
 
 # Kafka Producer Configuration
 producer = KafkaProducer(
-    bootstrap_servers=["172.18.0.7"],
+    bootstrap_servers=["127.0.0.1:9092"],
     value_serializer=json_serializer
 )
 
