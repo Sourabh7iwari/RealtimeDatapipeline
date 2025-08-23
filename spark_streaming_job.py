@@ -1,8 +1,7 @@
 import logging
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import from_json, col
+from pyspark.sql.functions import from_json, col, to_timestamp
 from pyspark.sql.types import StructType, StructField, IntegerType, FloatType, StringType
-import os
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -41,9 +40,15 @@ try:
     # Convert Kafka message value to a DataFrame
     try:
         logger.info("Parsing and transforming Kafka data")
-        json_df = kafka_stream_df.selectExpr("CAST(value AS STRING)") \
+        parsed_df = kafka_stream_df.selectExpr("CAST(value AS STRING)") \
             .select(from_json(col("value"), schema).alias("data")) \
             .select("data.*")
+        
+        timestamp_format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX" 
+        json_df = parsed_df.withColumn("timestamp", to_timestamp(col("timestamp"), timestamp_format)) 
+
+
+
         logger.info("Data parsed and transformed successfully")
     except Exception as e:
         logger.error(f"Error transforming data: {e}")
